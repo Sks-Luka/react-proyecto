@@ -1,28 +1,38 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import Item from "../Item/Item"
-import { getProductById } from "../../asyncMock"
+import ItemDetail from "../ItemDetail/ItemDetail"
+import { db } from "../../Services/Firebase/FirebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+
 
 const ItemDetailContainer = ()=>{
     const [products, setProducts] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     const { ItemId} = useParams()
 
     useEffect(() => { 
-        getProductById(ItemId)
+        setLoading(true)
+
+        const docRef = doc(db,`products`,ItemId) 
+
+        getDoc(docRef)
         .then(response =>{
-            setProducts(response)
+            const data = response.data()
+            const productsAdapted = {id: response.id, ...data}
+            setProducts(productsAdapted)
         })
         .catch(error =>{
             console.error(error)
         })
-
+        .finally(() => {
+            setLoading(false)
+        })
 }, [ItemId])
 
 return(
     <div className="ItemDetailContainer">
-
-        <Item {...products} />
+        <ItemDetail {...products} />
     </div>
     )
 

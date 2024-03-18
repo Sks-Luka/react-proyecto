@@ -1,5 +1,4 @@
 
-import ItemCount from "../ItemCount/ItemCount";
 import "./Item.css";
 import {Link} from "react-router-dom";
 
@@ -14,7 +13,7 @@ const Item = ({id, name, Image, price, stock, category}) => {
                 </h2>
             </header>
             <picture className="Img">
-                <img src={Image} alt="#"/>
+                <img src={Image} alt={name} />
             </picture>
             <section>
                 <p className="Info">
@@ -30,9 +29,7 @@ const Item = ({id, name, Image, price, stock, category}) => {
                 </div>
             </section>
             <footer className="ItemFooter">
-                <div className="Contador">
-                    <ItemCount  initial={0} stock={15} onAdd={(quantity)=> console.log ('Cantidad agregada',quantity)} />
-                </div>
+                
             </footer>
         </article>
     )
